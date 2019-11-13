@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">UrbanDictionary</string>
+    <string name="search_term">Search Term</string>
+    <string name="button_search">Search</string>
+    <string name="no_results">No results</string>
+    <string name="result_count">Results: %1$d</string>
+    <string name="no_result_count">Results: No Results</string>
+</resources>
