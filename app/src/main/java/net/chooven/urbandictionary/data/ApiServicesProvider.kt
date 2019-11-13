@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 
 /**
- * Provides [Picasso], [WeatherService] and [IconApi]
+ * Provides [UrbanDictService]
  * that are all ready setup and ready to use.
  */
 class ApiServicesProvider(application: Application) {
@@ -62,15 +62,10 @@ class ApiServicesProvider(application: Application) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-//        val debugInterceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-//            this.level = HttpLoggingInterceptor.Level.HEADERS
-//            this.level = HttpLoggingInterceptor.Level.BODY
-//        }
 
         return OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(loggingInterceptor)
-                //.addInterceptor(headersInterceptor())
+                //.addInterceptor(loggingInterceptor)
                 .addInterceptor { chain ->
                     val newRequest = chain.request().newBuilder()
                         .addHeader("User-x-rapidapi-host","mashape-community-urban-dictionary.p.rapidapi.com")

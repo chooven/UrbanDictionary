@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit
 
 class DateDeserializer : JsonDeserializer<Date> {
 
+    /**
+     * Deserialize String date from API ("yyyy-MM-dd'T'HH:mm:ss") to Date()
+     * @return Date() or Null
+     */
     override fun deserialize(json: JsonElement?, typeOfT: Type, context: JsonDeserializationContext) =
         if (json == null) null else try {
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(json.asString)
