@@ -7,8 +7,6 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,20 +14,13 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import net.chooven.urbandictionary.R
 import net.chooven.urbandictionary.UrbanDictionary
-import net.chooven.urbandictionary.data.UrbanDictRepository
-import net.chooven.urbandictionary.data.UrbanDictResponseViewModelFactory
-import net.chooven.urbandictionary.data.api.UrbanDictService
 import net.chooven.urbandictionary.data.model.UrbanDefinition
 import net.chooven.urbandictionary.data.model.UrbanDictResponse
-import net.chooven.urbandictionary.data.model.view_model.UrbanDictResponseViewModel
 import net.chooven.urbandictionary.ui.adapter.RecyclerAdapter
-import retrofit2.Call
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: UrbanDictResponseViewModel
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: RecyclerAdapter
     private lateinit var mCompositeDisposable: CompositeDisposable
     private var searchTerm: String = ""
     private lateinit var definitionsList: List<UrbanDefinition>
@@ -55,12 +46,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun sortList(byThumbsUp: Boolean){
-        if(byThumbsUp) {
-            definitionsList.sortedBy { it.thumbsUp }.reversed()
+        definitionsList = if(byThumbsUp) {
+            definitionsList.sortedWith(compareBy {it.thumbsUp}).reversed()
         } else {
-            definitionsList.sortedBy { it.thumbsDown }.reversed()
+            definitionsList.sortedWith(compareBy {it.thumbsDown}).reversed()
         }
-        adapter = RecyclerAdapter(definitionsList)
+        recyclerResults.adapter = RecyclerAdapter(this, definitionsList)
+        recyclerResults.adapter!!.notifyDataSetChanged()
     }
     private fun loadDefinition() {
         searchTerm = txtSearchTerm.text.toString().trim()
@@ -83,9 +75,8 @@ class MainActivity : AppCompatActivity() {
             recyclerResults.visibility = View.VISIBLE
             txtResults.text = resources.getString(R.string.result_count, urbanDictionaryResponse.definitions.size)
             definitionsList = urbanDictionaryResponse.definitions
-            adapter = RecyclerAdapter(definitionsList)
             recyclerResults.layoutManager = layoutManager
-            recyclerResults.adapter = adapter
+            recyclerResults.adapter = RecyclerAdapter(this, definitionsList)
         } else {
             recyclerResults.visibility = View.GONE
         }
