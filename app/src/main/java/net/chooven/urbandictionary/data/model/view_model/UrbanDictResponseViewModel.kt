@@ -11,5 +11,15 @@ class UrbanDictResponseViewModel(urbanDictRepository: UrbanDictRepository,
      * List of Definitions
      * @return Definitions
      */
-    //var definitions: List<UrbanDictResponse> = urbanDictRepository.getDefinition(term)
+    var response: LiveData<UrbanDictResponse> = urbanDictRepository.getDefinition(term)
+
+    fun sortList(byThumbsUp: Boolean): LiveData<UrbanDictResponse> {
+        if(byThumbsUp){
+            response.value?.definitions?.sortedBy { it.thumbsUp }
+        } else {
+            response.value?.definitions?.sortedBy { it.thumbsDown }
+        }
+        return response
+    }
+
 }

@@ -4,5 +4,10 @@
     <string name="button_search">Search</string>
     <string name="no_results">No results</string>
     <string name="result_count">Results: %1$d</string>
-    <string name="no_result_count">Results: No Results</string>
+    <string name="no_result_count">Results: None</string>
+
+    <string name="definition_date">Date: %1$s</string>
+    <string name="definition_author">Author: %1$s</string>
+    <string name="definition_examples">Examples:\n%1$s</string>
+    <string name="sort_by">Sort By:</string>
 </resources>
