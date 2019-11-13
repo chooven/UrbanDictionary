@@ -19,6 +19,7 @@ import net.chooven.urbandictionary.UrbanDictionary
 import net.chooven.urbandictionary.data.UrbanDictRepository
 import net.chooven.urbandictionary.data.UrbanDictResponseViewModelFactory
 import net.chooven.urbandictionary.data.api.UrbanDictService
+import net.chooven.urbandictionary.data.model.UrbanDefinition
 import net.chooven.urbandictionary.data.model.UrbanDictResponse
 import net.chooven.urbandictionary.data.model.view_model.UrbanDictResponseViewModel
 import net.chooven.urbandictionary.ui.adapter.RecyclerAdapter
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAdapter
     private lateinit var mCompositeDisposable: CompositeDisposable
     private var searchTerm: String = ""
+    private lateinit var definitionsList: List<UrbanDefinition>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,24 @@ class MainActivity : AppCompatActivity() {
             hideKeyboard()
             loadDefinition()
         }
-
+        imgSortThumbsUp.setOnClickListener {
+            imgSortThumbsDown.alpha = 0.5f
+            imgSortThumbsUp.alpha = 1.0f
+            sortList(true)
+        }
+        imgSortThumbsDown.setOnClickListener {
+            imgSortThumbsUp.alpha = 0.5f
+            imgSortThumbsDown.alpha = 1.0f
+            sortList(false)
+        }
+    }
+    private fun sortList(byThumbsUp: Boolean){
+        if(byThumbsUp) {
+            definitionsList.sortedBy { it.thumbsUp }.reversed()
+        } else {
+            definitionsList.sortedBy { it.thumbsDown }.reversed()
+        }
+        adapter = RecyclerAdapter(definitionsList)
     }
     private fun loadDefinition() {
         searchTerm = txtSearchTerm.text.toString().trim()
@@ -63,7 +82,8 @@ class MainActivity : AppCompatActivity() {
         if(urbanDictionaryResponse.definitions.isNotEmpty()) {
             recyclerResults.visibility = View.VISIBLE
             txtResults.text = resources.getString(R.string.result_count, urbanDictionaryResponse.definitions.size)
-            adapter = RecyclerAdapter(urbanDictionaryResponse.definitions)
+            definitionsList = urbanDictionaryResponse.definitions
+            adapter = RecyclerAdapter(definitionsList)
             recyclerResults.layoutManager = layoutManager
             recyclerResults.adapter = adapter
         } else {
