@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAdapter
     private lateinit var mCompositeDisposable: CompositeDisposable
     private lateinit var viewModel: UrbanDictResponseViewModel
-    private var searchTerm: String = ""
+    private var searchTerm: String = "dude"
     private var sortByThumbsUp = true
     private var sortedList: List<UrbanDefinition> = listOf()
 
@@ -36,6 +36,13 @@ class MainActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         mCompositeDisposable = CompositeDisposable()
 
+        val viewModelFactory = UrbanDictResponseViewModelFactory(UrbanDictRepository())
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(UrbanDictResponseViewModel::class.java)
+        viewModel.getDefinitions(searchTerm).observe(this, Observer {
+            if(it == null) return@Observer
+            handleResponse(it)
+        })
         btnSearch.setOnClickListener {
             hideKeyboard()
             btnSearch.requestFocus()
@@ -64,10 +71,7 @@ class MainActivity : AppCompatActivity() {
         searchTerm = txtSearchTerm.text.toString().trim()
         if(searchTerm.isNotEmpty()) {
             if(searchTerm.isNotEmpty()) {
-                val viewModelFactory = UrbanDictResponseViewModelFactory(UrbanDictRepository(), searchTerm)
-                viewModel = ViewModelProviders.of(this, viewModelFactory)
-                    .get(UrbanDictResponseViewModel::class.java)
-                viewModel.response.observe(this, Observer { handleResponse(it) })
+                viewModel.getDefinitions(searchTerm)
             } else {
                 Toast.makeText(this@MainActivity, "Please enter a word to search for", Toast.LENGTH_LONG).show()
                 txtSearchTerm.requestFocus()

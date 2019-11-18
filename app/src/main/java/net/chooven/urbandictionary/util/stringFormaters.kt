@@ -1,5 +1,6 @@
 package net.chooven.urbandictionary.util
 
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,9 +19,14 @@ object StringFormatter {
         if(date == null){
             return ""
         }
-        val dateFormat = "MM/dd/YY"
-        val formatter = SimpleDateFormat (dateFormat, Locale.ENGLISH)
-        return formatter.format(date)
+        return try {
+            val dateFormat = "MM/dd/yy"
+            val formatter = SimpleDateFormat(dateFormat, Locale.ENGLISH)
+            formatter.format(date)
+        } catch (e: Exception){
+            Timber.e(e,"Error formatting Date string: $date")
+            "N/A"
+        }
     }
 
 }

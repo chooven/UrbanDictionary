@@ -8,16 +8,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutSearchTerm"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginTop="40dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/btnSearch"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:errorEnabled="true">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toStartOf="@+id/btnSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtSearchTerm"
@@ -34,19 +34,20 @@
         style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="#939393"
         android:text="@string/button_search"
-        app:layout_constraintBottom_toBottomOf="@+id/layoutSearchTerm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/layoutSearchTerm"
-        app:layout_constraintTop_toTopOf="@+id/layoutSearchTerm" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutSearchTerm"
-        tools:text="Results: 10"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:text="Results: 10" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,12 +56,14 @@
         android:text="@string/sort_by"
         app:layout_constraintBottom_toBottomOf="@+id/imgSortThumbsUp"
         app:layout_constraintEnd_toStartOf="@+id/imgSortThumbsUp" />
+
     <ImageView
         android:id="@+id/imgSortThumbsUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_thumb_up_24dp"
+        android:contentDescription="@string/sort_thumbs_up"
         app:layout_constraintBottom_toBottomOf="@+id/txtResults"
         app:layout_constraintEnd_toStartOf="@+id/imgSortThumbsDown" />
 
@@ -69,6 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:contentDescription="@string/sort_thumbs_down"
         android:background="@drawable/ic_thumb_down_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtResults"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -81,17 +85,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtResults"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/txtResults" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
         android:minWidth="50dp"
+        android:minHeight="50dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
